@@ -1,0 +1,25 @@
+#!usr/bin/perl;
+use warnings;
+use strict;
+
+chomp(my $filename = $ARGV[0]);
+unless(open(BROKEN,"<",$filename)){
+	die "That file doesn't exist: $!";
+}
+
+$/ = '>';
+my @fasta = <BROKEN>;
+$/ = "\n";
+
+for (my $i=1;$i < (scalar @fasta);$i++){ 
+	foreach ($fasta[$i]){
+		print $_;
+		if ($_ =~ /(^>.*)/){
+			print $1;
+		}
+		else {
+			print "*",$_,"*";
+		}
+	}	
+}	
+#print $fasta[1];
