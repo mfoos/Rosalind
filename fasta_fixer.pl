@@ -12,10 +12,17 @@ unless(open(FIXED,">$filename")){
 	die "That outfile cannot be opened: $!";
 }
 
+my $previous = 0;
 while (<BROKEN>){
 	chomp;
 	if ($_ =~ /^>/){
-		print FIXED "\n",$_,"\n";
+		if ($previous == 0){
+			print FIXED $_,"\n";
+			$previous = 1;
+		}
+		else {
+			print FIXED "\n",$_,"\n";
+		}	
 	} else {
 		print FIXED $_;
 	}
