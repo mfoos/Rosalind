@@ -1,23 +1,30 @@
-import re
-
 content = open("rosalind_lcsm.txt.fixed","r")
 fasta = content.readlines()
 
-entryCount = 0
+seqSet = []
 for entry in fasta:
 	if entry[0] == ">":
-		entryCount += 1
+		next
+	else:
+		seqSet.append(entry)
 
-start = 3
-for i in range(1,len(fasta), 2):
-	substring = fasta[i][:start]
-	for j in range(1,len(fasta),2):
-		while j < len(fasta):
-			if re.search(substring, fasta[j],flags=0):
-				print substring
-			else:
-				print "Not found in sequence %d" % (j/2)
-				continue	
-			j += 1
+subStringGenerator = seqSet.pop(0)
+#any longest common substring will exist in any sequence in the dataset
+
+shortestString = len(min(seqSet, key=len))
+start = 0
+end = 5
+size = 5
+match = False
+while start < len(subStringGenerator):
+	subString = subStringGenerator[start:end]
+	for seq in seqSet:
+		if subString in seq:
+			print subString,
+			match = True #there exists a common substring at this length
 		else:
-			start += 1
+			print "subString absent"
+			break
+	start = end
+	end += size
+
