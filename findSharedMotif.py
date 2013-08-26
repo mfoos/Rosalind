@@ -1,3 +1,6 @@
+import sys
+
+DEBUG = False
 content = open("rosalind_lcsm.txt.fixed","r")
 fasta = content.readlines()
 
@@ -11,25 +14,30 @@ for entry in fasta:
 subStringGenerator = seqSet.pop(0)
 #any longest common substring will exist in any sequence in the dataset
 
-end = size = len(min(seqSet, key=len))
-start = 0
-newMin = None
-while start < len(subStringGenerator):
-	subString = subStringGenerator[start:end]
-	mismatch = False	
-	for seq in seqSet:
-		if subString in seq:
-			print subString
-		else:
-			print "String %s absent from this record" % subString
-			mismatch = True
-			break
+newMin = 0
+for seqPos in reversed(range(len(subStringGenerator))):
+	start = 0
+	end = start
+	#window = len(subStringGenerator)
+	print "sequence position: %d" % seqPos
+	while start < len(subStringGenerator) and end <= len(subStringGenerator):
+		end = start + seqPos + 1 #window
+		subString = subStringGenerator[start:end]
+		if DEBUG:
+			print "start: %d" % start
+			print "end: %d" % end
+			print "substring: %s" % subString
+		mismatch = False	
+		for seq in seqSet:
+			if subString not in seq:
+				#print "String %s absent from this record" % subString
+				mismatch = True
+				break
+		
+		if mismatch == False and len(subString) > newMin:
+			newMin = len(subString)		
+			print newMin
+			print "Match Found! - %s" % subString
+			sys.exit(0)
 
-	if mismatch == False:
-		newMin = len(subString)		
-
-	start = end
-	end += size
-	end -= 1
-
-print newMin
+		start += 1
