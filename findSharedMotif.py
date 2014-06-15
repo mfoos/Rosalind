@@ -1,15 +1,17 @@
 import sys
 
 DEBUG = False
-content = open("rosalind_lcsm.txt.fixed","r")
+content = open("rosalind_lcsm.txt","r")
 fasta = content.readlines()
 
 seqSet = []
+indivSeq = ""
 for entry in fasta:
-	if entry[0] == ">":
+    if entry[0] == ">":
 		next
-	else:
-		seqSet.append(entry.strip())
+    else:
+        indivSeq += entry.strip()
+	seqSet.append(indivSeq)
 
 subStringGenerator = seqSet.pop(0)
 #any longest common substring will exist in any sequence in the dataset
